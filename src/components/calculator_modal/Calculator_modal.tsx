@@ -80,6 +80,7 @@ function Calculator() {
 
   return (
     <div className={styles.calculator}>
+     <h1 className={styles.title}>Benny's Calculator</h1>
       <input
         data-testid="display"
         className={styles.displayTab}
