@@ -14,7 +14,8 @@ function Calculator() {
     if (result === "0") {
       setResult(num);
     } else {
-      setResult(result + num);
+      //setResult(result + num);
+      setResult(result += num);
     }
   };
 
@@ -25,7 +26,8 @@ function Calculator() {
       case "-":
       case "*":
       case "/":
-        setPrevNumber(prevNumber + result + op);
+       // setPrevNumber(prevNumber + result + op);
+       setPrevNumber(prevNumber += result += op)
         setResult("0");
         break;
       default:
@@ -47,7 +49,8 @@ function Calculator() {
 
     switch (operator) {
       case "+":
-        newResult = parseFloat(prev) + parseFloat(currentNumber);
+       // newResult = parseFloat(prev) + parseFloat(currentNumber);
+       newResult = parseFloat(prev) + parsefloat(current Number);
         break;
       case "-":
         newResult = parseFloat(prev) - parseFloat(currentNumber);
