@@ -40,29 +40,35 @@ function Calculator() {
   };
 
   const handleEqualsClick = () => {
-    const currentNumber = result || 0; // set default value if undefined
+    const currentNumber = result;
     let newResult = "";
-
-    const prev = prevNumber || 0; // set default value if undefined
 
     switch (operator) {
       case "+":
-        newResult = parseFloat(prev) + parseFloat(currentNumber);
+        newResult = (
+          parseFloat(prevNumber) + parseFloat(currentNumber)
+        ).toString();
         break;
       case "-":
-        newResult = parseFloat(prev) - parseFloat(currentNumber);
+        newResult = (
+          parseFloat(prevNumber) - parseFloat(currentNumber)
+        ).toString();
         break;
       case "*":
-        newResult = parseFloat(prev) * parseFloat(currentNumber);
+        newResult = (
+          parseFloat(prevNumber) * parseFloat(currentNumber)
+        ).toString();
         break;
       case "/":
-        newResult = parseFloat(prev) / parseFloat(currentNumber);
+        newResult = (
+          parseFloat(prevNumber) / parseFloat(currentNumber)
+        ).toString();
         break;
       default:
         return;
     }
 
-    setResult(newResult.toString());
+    setResult(newResult);
     setPrevNumber("");
     setOperator("");
   };
@@ -74,13 +80,13 @@ function Calculator() {
 
   return (
     <div className={styles.calculator}>
-      <h1 className={styles.title}>Benny's Calculator</h1>
+     <h1 className={styles.title}>Benny's Calculator</h1>
       <input
         data-testid="display"
         className={styles.displayTab}
         type="text"
         disabled
-        value={result}
+        value={`${prevNumber} ${operator} ${result}`}
       ></input>
 
       <div className={styles.btn_container}>
