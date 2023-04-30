@@ -4,7 +4,7 @@ import styles from "./Calculator_modal.module.scss";
 
 function Calculator() {
   //TODO: implement the on/off button
-  const [isOn, setIsOn] = useState<boolean>(true);
+  const [isOn, setIsOn] = useState<boolean>(false);
   // TODO: implement logic of the calculator interface!
   const [result, setResult] = useState<string>("");
   const [prevNumber, setPrevNumber] = useState<string>("");
