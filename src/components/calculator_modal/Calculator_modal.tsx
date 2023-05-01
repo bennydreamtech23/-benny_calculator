@@ -9,7 +9,7 @@ function Calculator() {
   const [currentInput, setCurrentInput] = useState<string>("");
   const [prevInput, setPrevInput] = useState<string>("");
   const [dec, setDec] = useState<boolean>(false);
-  const handleButtonClick = (value) => {
+  const handleButtonClick = (value: string) => {
     const lastChar = currentInput.charAt(currentInput.length - 1);
 
     if (value === "C") {
@@ -45,7 +45,7 @@ function Calculator() {
     <div className={styles.calculator}>
       <h1 className={styles.title}>Benny's Calculator</h1>
       <div className={styles.header}>
-        <p disabled={!isOn}>{prevInput}</p>
+        <p>{prevInput}</p>
       </div>
       <input
         data-testid="display"
@@ -61,11 +61,7 @@ function Calculator() {
       <div className={styles.btn_container}>
         <button
           className={`${styles.btn} ${styles.on}`}
-          style={
-            isOn
-              ? { backgroundColor: "#24B3A8" }
-              : { backgroundColor: "#1D8D84" }
-          }
+          
           onClick={() => handleOnClick()}
         >
           {isOn ? "ON" : "OFF"}
