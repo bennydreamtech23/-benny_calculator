@@ -1,35 +1,56 @@
 import { useState } from "react";
-//import "./App.css";
 import styles from "./Calculator_modal.module.scss";
 
 function Calculator() {
   //TODO: implement the on/off button
-  const [isOn, setIsOn] = useState<boolean>(false);
-  // TODO: implement logic of the calculator interface!
-  const [result, setResult] = useState<string>("");
-  const [prevNumber, setPrevNumber] = useState<string>("");
-  const [operator, setOperator] = useState<string>("");
+  const [isOn, setIsOn] = useState(false);
+  //TODO: implement logic of the calculator interface!
+  let [result, setResult] = useState("");
+  let [prevNumber, setPrevNumber] = useState("");
+  let [operator, setOperator] = useState("");
+  let [answer, setAnswer] = useState("");
+  let operatorsarray = ["+", "-", "/", "*"];
+  let lastChar = result[result.length - 1];
 
-  const handleNumberClick = (num: string) => {
+  const handleNumberClick = (num) => {
     if (result === "0") {
       setResult(num);
     } else {
       //setResult(result + num);
-      setResult(result += num);
+      setResult((result += num));
     }
+    setAnswer("");
   };
 
-  const handleOperatorClick = (op: string) => {
+  const handleOperatorClick = (op) => {
+    setAnswer("");
+    if (result === "" && op !== "-") return;
     setOperator(op);
+    console.log(result);
     switch (op) {
       case "+":
       case "-":
       case "*":
       case "/":
-       // setPrevNumber(prevNumber + result + op);
-       setPrevNumber(prevNumber += result += op)
-        setResult("0");
+        if (operatorsarray.indexOf(op) > -1) {
+          if (operatorsarray.indexOf(lastChar) === -1) {
+            setResult((result += op));
+          }
+          //console.log(operatorsarray.includes(operatorsarray.filter((item)=> item !== op)));
+          //console.log(lastChar);
+          //console.log(result.substring(0, result.length - 1));
+          //setResult(result.substring(0, result.length - 1));
+          else console.log(operatorsarray.includes(lastChar));
+
+          if (op === lastChar || operatorsarray.includes(lastChar)) {
+            //handlebackSpace();
+            let newResult = result.substring(0, result.length - 1);
+            setResult((newResult += op));
+          }
+        }
+
         break;
+
       default:
         return;
     }
@@ -39,33 +60,15 @@ function Calculator() {
     setResult("");
     setPrevNumber("");
     setOperator("");
+    setAnswer("");
   };
 
   const handleEqualsClick = () => {
-    const currentNumber = result || 0; // set default value if undefined
-    let newResult = "";
-
-    const prev = prevNumber || 0; // set default value if undefined
-
-    switch (operator) {
-      case "+":
-       // newResult = parseFloat(prev) + parseFloat(currentNumber);
-       newResult = parseFloat(prev) + parsefloat(current Number);
-        break;
-      case "-":
-        newResult = parseFloat(prev) - parseFloat(currentNumber);
-        break;
-      case "*":
-        newResult = parseFloat(prev) * parseFloat(currentNumber);
-        break;
-      case "/":
-        newResult = parseFloat(prev) / parseFloat(currentNumber);
-        break;
-      default:
-        return;
+    if (operatorsarray.includes(lastChar)) {
+      setResult(result.substring(0, result.length - 1));
+      setAnswer(eval(result));
     }
-
-    setResult(newResult.toString());
+    setAnswer(eval(result));
     setPrevNumber("");
     setOperator("");
   };
@@ -73,6 +76,7 @@ function Calculator() {
   const handleOnClick = () => {
     setIsOn(!isOn);
     setResult("");
+    setAnswer("");
   };
 
   return (
@@ -84,11 +88,24 @@ function Calculator() {
         type="text"
         disabled
         value={result}
+        style={
+          isOn ? { backgroundColor: "#7CE4DC" } : { backgroundColor: "#A2ECE6" }
+        }
+      ></input>
+      <input
+        // data-testid="display"
+        className={styles.answerTab}
+        type="text"
+        disabled
+        value={answer}
+        style={
+          isOn ? { backgroundColor: "#56DDD2" } : { backgroundColor: "#A2ECE6" }
+        }
       ></input>
 
       <div className={styles.btn_container}>
         <button
-          className={`${styles.btn} ${styles.wide}`}
+          className={`${styles.btn} ${styles.on}`}
           onClick={() => handleOnClick()}
         >
           {isOn ? "ON" : "OFF"}
@@ -100,6 +117,15 @@ function Calculator() {
           disabled={!isOn}
         >
           C
+        </button>
+
+        <button
+          // data-testid="btn-clear"
+          className={`${styles.btn} ${styles.wide}`}
+          // onClick={() => handleClearClick()}
+          disabled={!isOn}
+        >
+          Del
         </button>
         <button
           data-testid="btn-div"
@@ -186,7 +212,7 @@ function Calculator() {
         </button>
         <button
           data-testid="btn-2"
-          className={styles.btn}
+          className="btn"
           onClick={() => handleNumberClick("2")}
           disabled={!isOn}
         >
@@ -194,7 +220,7 @@ function Calculator() {
         </button>
         <button
           data-testid="btn-3"
-          className={styles.btn}
+          className="btn"
           onClick={() => handleNumberClick("3")}
           disabled={!isOn}
         >
@@ -202,7 +228,7 @@ function Calculator() {
         </button>
         <button
           data-testid="btn-add"
-          className={styles.btn}
+          className="btn"
           onClick={() => handleOperatorClick("+")}
           disabled={!isOn}
         >
@@ -211,7 +237,7 @@ function Calculator() {
 
         <button
           data-testid="btn-0"
-          className={`${styles.btn} ${styles.wide}`}
+          className="btn wide"
           onClick={() => handleNumberClick("0")}
           disabled={!isOn}
         >
@@ -219,7 +245,7 @@ function Calculator() {
         </button>
         <button
           data-testid="btn-eval"
-          className={styles.btn}
+          className="btn"
           onClick={() => handleEqualsClick()}
           disabled={!isOn}
         >

@@ -13,11 +13,12 @@
     max-width: 320px;
   }
 
-  .displayTab {
+  .displayTab,
+  .answerTab {
     margin: 1rem 0rem;
     background: #fff;
     border: none;
-    box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.25);
     outline: none;
     padding: 20px 10px;
     width: 80%;
@@ -26,10 +27,13 @@
     font-size: 40px;
     border-radius: 0;
   }
+  .answerTab {
+    margin-top: -1rem;
+  }
 
   .btn {
     background: rgba(0, 0, 0, 1);
-    border: 2px solid rgba(0, 0, 0, 0.5);
+    border: none;
     padding: 20px;
     color: #eee;
     border-radius: 10px;
@@ -39,7 +43,7 @@
 
     &:hover,
     &:active {
-      background: rgba(0, 0, 0, 0.8);
+      background: #1d8d84;
       transform: scale(0.9);
     }
   }
@@ -56,7 +60,12 @@
     color: rgba(0, 0, 0, 0.5);
     font-weight: 700;
   }
-  .wide {
+  .on {
     grid-column: span 2;
+    background: #156760;
+  }
+  .wide {
+    grid-column: span 1;
+    background: #24B3A8;
   }
 }
