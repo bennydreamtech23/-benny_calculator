@@ -1,0 +1,71 @@
+import React, { useState } from 'react';
+import styles from "./Calculator_modal.module.scss";
+
+
+function Calculator() {
+  const [currentInput, setCurrentInput] = useState<string>("");
+  const [prevInput, setPrevInput] = useState<string>("");
+
+  const handleButtonClick1 = (value) => {
+    if (value === 'C') {
+      setCurrentInput('');
+      setPrevInput('');
+    } else if (value === '=') {
+      const result = eval(currentInput);
+      setCurrentInput(result.toString());
+      setPrevInput(currentInput + value + result.toString());
+    } else {
+      setCurrentInput(currentInput + value);
+    }
+  };
+  const handleButtonClick = (value) => {
+  const lastChar = currentInput.charAt(currentInput.length - 1);
+
+  if (value === 'C') {
+    setCurrentInput('');
+    setPrevInput('');
+  } else if (value === '=') {
+    const result = eval(currentInput);
+    setCurrentInput(result.toString());
+    setPrevInput(currentInput + value + result.toString());
+  } else if (['+', '-', '*', '/'].includes(value)) {
+    if (!['+', '-', '*', '/'].includes(lastChar)) {
+      setCurrentInput(currentInput + value);
+    }
+  } else {
+    setCurrentInput(currentInput + value);
+  }
+};
+
+  return (
+    <div>
+      <h2>Calculator</h2>
+      <div>
+        <input data-testid="display" type="text" value={currentInput} />
+      </div>
+      <div>
+        <button onClick={() => handleButtonClick('C')}>C</button>
+        <button onClick={() => handleButtonClick('+')}>+</button>
+        <button onClick={() => handleButtonClick('-')}>-</button>
+        <button onClick={() => handleButtonClick('*')}>*</button>
+        <button onClick={() => handleButtonClick('/')}>/</button>
+        <button onClick={() => handleButtonClick('7')}>7</button>
+        <button onClick={() => handleButtonClick('8')}>8</button>
+        <button onClick={() => handleButtonClick('9')}>9</button>
+        <button onClick={() => handleButtonClick('4')}>4</button>
+        <button onClick={() => handleButtonClick('5')}>5</button>
+        <button onClick={() => handleButtonClick('6')}>6</button>
+        <button onClick={() => handleButtonClick('1')}>1</button>
+        <button onClick={() => handleButtonClick('2')}>2</button>
+        <button onClick={() => handleButtonClick('3')}>3</button>
+        <button onClick={() => handleButtonClick('0')}>0</button>
+        <button onClick={() => handleButtonClick('.')}>.</button>
+        <button onClick={() => handleButtonClick('=')}>=</button>
+      </div>
+      <div>
+        <p>{prevInput}</p>
+      </div>
+    </div>
+  );
+}
+export default Calculator;

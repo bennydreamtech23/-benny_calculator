@@ -35,7 +35,7 @@ describe("Calculator", () => {
     ],
   ])("should display '%s' for input '%s' (%s)", (expectedOutput, input) => {
     // given
-    render(<CalculatorModal/>);
+    render(<CalculatorModal />);
     // when
     click(...input);
     // then

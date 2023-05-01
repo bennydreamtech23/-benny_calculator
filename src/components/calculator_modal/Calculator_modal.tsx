@@ -1,111 +1,71 @@
 import { useState } from "react";
+//import "./App.css";
 import styles from "./Calculator_modal.module.scss";
 
 function Calculator() {
   //TODO: implement the on/off button
-  const [isOn, setIsOn] = useState(false);
-  //TODO: implement logic of the calculator interface!
-  let [result, setResult] = useState("");
-  let [prevNumber, setPrevNumber] = useState("");
-  let [operator, setOperator] = useState("");
-  let [answer, setAnswer] = useState("");
-  let operatorsarray = ["+", "-", "/", "*"];
-  let lastChar = result[result.length - 1];
+  const [isOn, setIsOn] = useState<boolean>(true);
+  // TODO: implement logic of the calculator interface!
+  const [currentInput, setCurrentInput] = useState<string>("");
+  const [prevInput, setPrevInput] = useState<string>("");
+  const [dec, setDec] = useState<boolean>(false);
+  const handleButtonClick = (value) => {
+    const lastChar = currentInput.charAt(currentInput.length - 1);
 
-  const handleNumberClick = (num) => {
-    if (result === "0") {
-      setResult(num);
+    if (value === "C") {
+      setCurrentInput("");
+      setPrevInput("");
+    } else if (value === "=") {
+      const result = eval(currentInput);
+      setCurrentInput(result.toString());
+      setPrevInput(currentInput + value + result.toString());
+    } else if (["+", "-", "*", "/"].includes(value)) {
+      if (!["+", "-", "*", "/"].includes(lastChar)) {
+        setCurrentInput(currentInput + value);
+        setDec(false);
+      }
+    } else if (value === ".") {
+      if (currentInput === "") {
+        setCurrentInput(currentInput + "0.");
+      }
+      if (currentInput !== "" && !currentInput.includes(".")) {
+        setCurrentInput(currentInput + value);
+      }
     } else {
-      //setResult(result + num);
-      setResult((result += num));
-    }
-    setAnswer("");
-  };
-
-  const handleOperatorClick = (op) => {
-    setAnswer("");
-    if (result === "" && op !== "-") return;
-    setOperator(op);
-    console.log(result);
-    switch (op) {
-      case "+":
-      case "-":
-      case "*":
-      case "/":
-        if (operatorsarray.indexOf(op) > -1) {
-          if (operatorsarray.indexOf(lastChar) === -1) {
-            setResult((result += op));
-          }
-          //console.log(operatorsarray.includes(operatorsarray.filter((item)=> item !== op)));
-          //console.log(lastChar);
-          //console.log(result.substring(0, result.length - 1));
-          //setResult(result.substring(0, result.length - 1));
-          else console.log(operatorsarray.includes(lastChar));
-
-          if (op === lastChar || operatorsarray.includes(lastChar)) {
-            //handlebackSpace();
-            let newResult = result.substring(0, result.length - 1);
-            setResult((newResult += op));
-          }
-        }
-
-        break;
-
-      default:
-        return;
+      setCurrentInput(currentInput + value);
     }
   };
-
-  const handleClearClick = () => {
-    setResult("");
-    setPrevNumber("");
-    setOperator("");
-    setAnswer("");
-  };
-
-  const handleEqualsClick = () => {
-    if (operatorsarray.includes(lastChar)) {
-      setResult(result.substring(0, result.length - 1));
-      setAnswer(eval(result));
-    }
-    setAnswer(eval(result));
-    setPrevNumber("");
-    setOperator("");
-  };
-
   const handleOnClick = () => {
     setIsOn(!isOn);
-    setResult("");
-    setAnswer("");
+    setCurrentInput("");
+    setPrevInput("");
   };
 
   return (
     <div className={styles.calculator}>
       <h1 className={styles.title}>Benny's Calculator</h1>
+      <div className={styles.header}>
+        <p disabled={!isOn}>{prevInput}</p>
+      </div>
       <input
         data-testid="display"
         className={styles.displayTab}
         type="text"
         disabled
-        value={result}
+        value={currentInput}
         style={
-          isOn ? { backgroundColor: "#7CE4DC" } : { backgroundColor: "#A2ECE6" }
+          isOn ? { backgroundColor: "#24B3A8" } : { backgroundColor: "#1D8D84" }
         }
-      ></input>
-      <input
-        // data-testid="display"
-        className={styles.answerTab}
-        type="text"
-        disabled
-        value={answer}
-        style={
-          isOn ? { backgroundColor: "#56DDD2" } : { backgroundColor: "#A2ECE6" }
-        }
-      ></input>
+      />
 
       <div className={styles.btn_container}>
         <button
           className={`${styles.btn} ${styles.on}`}
+          style={
+            isOn
+              ? { backgroundColor: "#24B3A8" }
+              : { backgroundColor: "#1D8D84" }
+          }
           onClick={() => handleOnClick()}
         >
           {isOn ? "ON" : "OFF"}
@@ -113,24 +73,15 @@ function Calculator() {
         <button
           data-testid="btn-clear"
           className={`${styles.btn} ${styles.wide}`}
-          onClick={() => handleClearClick()}
+          onClick={() => handleButtonClick("C")}
           disabled={!isOn}
         >
           C
         </button>
-
-        <button
-          // data-testid="btn-clear"
-          className={`${styles.btn} ${styles.wide}`}
-          // onClick={() => handleClearClick()}
-          disabled={!isOn}
-        >
-          Del
-        </button>
         <button
           data-testid="btn-div"
           className={styles.btn}
-          onClick={() => handleOperatorClick("/")}
+          onClick={() => handleButtonClick("/")}
           disabled={!isOn}
         >
           /
@@ -139,7 +90,7 @@ function Calculator() {
         <button
           data-testid="btn-7"
           className={styles.btn}
-          onClick={() => handleNumberClick("7")}
+          onClick={() => handleButtonClick("7")}
           disabled={!isOn}
         >
           7
@@ -147,7 +98,7 @@ function Calculator() {
         <button
           data-testid="btn-8"
           className={styles.btn}
-          onClick={() => handleNumberClick("8")}
+          onClick={() => handleButtonClick("8")}
           disabled={!isOn}
         >
           8
@@ -155,7 +106,7 @@ function Calculator() {
         <button
           data-testid="btn-9"
           className={styles.btn}
-          onClick={() => handleNumberClick("9")}
+          onClick={() => handleButtonClick("9")}
           disabled={!isOn}
         >
           9
@@ -163,7 +114,7 @@ function Calculator() {
         <button
           data-testid="btn-mul"
           className={styles.btn}
-          onClick={() => handleOperatorClick("*")}
+          onClick={() => handleButtonClick("*")}
           disabled={!isOn}
         >
           *
@@ -172,7 +123,7 @@ function Calculator() {
         <button
           data-testid="btn-4"
           className={styles.btn}
-          onClick={() => handleNumberClick("4")}
+          onClick={() => handleButtonClick("4")}
           disabled={!isOn}
         >
           4
@@ -180,7 +131,7 @@ function Calculator() {
         <button
           data-testid="btn-5"
           className={styles.btn}
-          onClick={() => handleNumberClick("5")}
+          onClick={() => handleButtonClick("5")}
           disabled={!isOn}
         >
           5
@@ -188,7 +139,7 @@ function Calculator() {
         <button
           data-testid="btn-6"
           className={styles.btn}
-          onClick={() => handleNumberClick("6")}
+          onClick={() => handleButtonClick("6")}
           disabled={!isOn}
         >
           6
@@ -196,7 +147,7 @@ function Calculator() {
         <button
           data-testid="btn-sub"
           className={styles.btn}
-          onClick={() => handleOperatorClick("-")}
+          onClick={() => handleButtonClick("-")}
           disabled={!isOn}
         >
           -
@@ -205,31 +156,31 @@ function Calculator() {
         <button
           data-testid="btn-1"
           className={styles.btn}
-          onClick={() => handleNumberClick("1")}
+          onClick={() => handleButtonClick("1")}
           disabled={!isOn}
         >
           1
         </button>
         <button
           data-testid="btn-2"
-          className="btn"
-          onClick={() => handleNumberClick("2")}
+          className={styles.btn}
+          onClick={() => handleButtonClick("2")}
           disabled={!isOn}
         >
           2
         </button>
         <button
           data-testid="btn-3"
-          className="btn"
-          onClick={() => handleNumberClick("3")}
+          className={styles.btn}
+          onClick={() => handleButtonClick("3")}
           disabled={!isOn}
         >
           3
         </button>
         <button
           data-testid="btn-add"
-          className="btn"
-          onClick={() => handleOperatorClick("+")}
+          className={styles.btn}
+          onClick={() => handleButtonClick("+")}
           disabled={!isOn}
         >
           +
@@ -237,19 +188,26 @@ function Calculator() {
 
         <button
           data-testid="btn-0"
-          className="btn wide"
-          onClick={() => handleNumberClick("0")}
+          className={styles.btn}
+          onClick={() => handleButtonClick("0")}
           disabled={!isOn}
         >
           0
         </button>
         <button
           data-testid="btn-eval"
-          className="btn"
-          onClick={() => handleEqualsClick()}
+          className={styles.btn}
+          onClick={() => handleButtonClick("=")}
           disabled={!isOn}
         >
           =
+        </button>
+        <button
+          onClick={() => handleButtonClick(".")}
+          className={styles.btn}
+          disabled={!isOn}
+        >
+          .
         </button>
       </div>
     </div>

@@ -1,7 +1,7 @@
 .calculator {
   max-width: 400px;
   margin: 0 auto;
-  border: 3px solid rgba(0, 0, 0, 0.5);
+  border: 3px solid #7ce4dc;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -21,8 +21,8 @@
     box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.25);
     outline: none;
     padding: 20px 10px;
-    width: 80%;
-    color: #555;
+    width: 90%;
+    color: #eee;
     text-align: right;
     font-size: 40px;
     border-radius: 0;
@@ -32,15 +32,15 @@
   }
 
   .btn {
-    background: rgba(0, 0, 0, 1);
+    background: #7ce4dc;
     border: none;
     padding: 20px;
-    color: #eee;
+    color: black;
     border-radius: 10px;
     font-size: 22px;
     cursor: pointer;
     transition: all 0.5s ease;
-
+    outline: none;
     &:hover,
     &:active {
       background: #1d8d84;
@@ -49,6 +49,7 @@
   }
 
   .btn_container {
+    width: 100%;
     padding: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -57,15 +58,25 @@
 
   .title {
     font-size: 1.2rem;
-    color: rgba(0, 0, 0, 0.5);
+    color: #1d8d84;
     font-weight: 700;
   }
+
   .on {
     grid-column: span 2;
     background: #156760;
+    border: none;
   }
   .wide {
-    grid-column: span 1;
-    background: #24B3A8;
+    grid-column: span 2;
+    background: #205560;
+    color: white;
+  }
+  .header {
+    background: #7ce4dc;
+    padding: 1rem 2rem;
+    width: 90%;
+    margin-bottom: -1rem;
+    text-align: right;
   }
 }
